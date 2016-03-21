@@ -1,0 +1,24 @@
+{
+    "name" : "braune-digital/api-base-bundle",
+    "description" : "Api bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Braune Digital GmbH",
+        "email" : "mail@braune-digital.com"
+    }],
+    "keywords" : [
+        "rest api"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "white-october/pagerfanta-bundle": "^1.0.0",
+        "nelmio/cors-bundle": "^1.4.0"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "BrauneDigital\\ApiBaseBundle\\" : ""
+        }
+    }
+}
