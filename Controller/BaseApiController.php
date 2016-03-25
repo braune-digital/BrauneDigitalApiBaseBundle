@@ -271,13 +271,13 @@ abstract class BaseApiController extends FOSRestController
 
         if($form instanceof Form) {
 
-            $form->submit($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
 
                 $this->denyAccessUnlessGranted('create', $entity);
 
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
                 $em->flush();
 
@@ -369,9 +369,9 @@ abstract class BaseApiController extends FOSRestController
 
         if($form instanceof Form) {
 
-            $form->submit($request);
+            $form->handleRequest($request);
 
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             if ($form->isValid()) {
                 $em->flush();
 
@@ -448,7 +448,7 @@ abstract class BaseApiController extends FOSRestController
 
         $this->denyAccessUnlessGranted('delete', $entity);
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $em->remove($entity);
         $em->flush();
