@@ -333,14 +333,7 @@ abstract class BaseApiController extends FOSRestController
      * @throws EntityNotFoundException
      */
     protected function readAction(Request $request, $id) {
-
-        $repo = $this->getRepository();
-        $entity = $repo->findOneById($id);
-
-
-        if($entity == null) {
-            throw new EntityNotFoundException();
-        }
+        $entity = $this->findEntity($id);
 
         $this->denyAccessUnlessGranted('read', $entity);
 
@@ -356,12 +349,7 @@ abstract class BaseApiController extends FOSRestController
      */
     protected function updateAction(Request $request, $id, $refresh = false, $formOptions = null) {
 
-        $repo = $this->getRepository();
-        $entity = $repo->findOneById($id);
-
-        if($entity == null) {
-            throw new EntityNotFoundException();
-        }
+        $entity = $this->findEntity($id);
 
         $this->denyAccessUnlessGranted('update', $entity);
 
@@ -438,13 +426,7 @@ abstract class BaseApiController extends FOSRestController
      * @throws EntityNotFoundException
      */
     protected function deleteAction(Request $request, $id) {
-
-        $repo = $this->getRepository();
-        $entity = $repo->findOneById($id);
-
-        if($entity == null) {
-            throw new EntityNotFoundException();
-        }
+        $entity = $this->findEntity($id);
 
         $this->denyAccessUnlessGranted('delete', $entity);
 
@@ -530,5 +512,22 @@ abstract class BaseApiController extends FOSRestController
             $this->serializationContext = SerializationContext::create();
         }
         return $this->serializationContext;
+    }
+
+    /**
+     * @param $id
+     *
+     * @throws EntityNotFoundException
+     * Find one entity by id
+     */
+    protected function findEntity($id) {
+        $repo = $this->getRepository();
+        $entity = $repo->findOneById($id);
+
+        if($entity == null) {
+            throw new EntityNotFoundException();
+        }
+
+        return $entity;
     }
 }
