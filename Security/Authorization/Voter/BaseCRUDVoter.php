@@ -5,7 +5,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Application\Sonata\UserBundle\Entity\User;
+use FOS\UserBundle\Model\User;
 
 abstract class BaseCRUDVoter extends Voter
 {
