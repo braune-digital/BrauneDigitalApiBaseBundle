@@ -83,7 +83,6 @@ class ApiRequestHandler implements RequestHandlerInterface
                 //try to bind the form to data if the form was not found
                 $params = $request->request->all();
                 $files = $request->files->all();
-
             }
 
             if (is_array($params) && is_array($files)) {
@@ -98,6 +97,6 @@ class ApiRequestHandler implements RequestHandlerInterface
             return;
         }
 
-        $form->submit($data, 'PATCH' !== $method);
+        $form->submit($data, !in_array($method, array('POST', 'PATCH')));
     }
 }
