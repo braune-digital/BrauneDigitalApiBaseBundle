@@ -114,6 +114,173 @@ providers:
             provider: braune_digital_api_base #use apikeys for authentication
 ```
 ## Usage
+## BaseApiController
+The BaseApiController provides the underlying logic to create api-endpoints fast and easy: Just extend the *BrauneDigital\ApiBaseBundle\Controller\BaseApiController* and add your functions:
+```php
+<?php
+
+namespace BrauneDigital\DemoBundle\Controller\V1;
+
+use BrauneDigital\ApiBaseBundle\Controller\BaseApiController;
+use BrauneDigital\DemoBundle\Form\Type\ProjectType;
+use BrauneDigital\Pitcher\BaseBundle\Entity\Company;
+use BrauneDigital\Pitcher\BaseBundle\Entity\Project;
+use Doctrine\Common\Collections\ArrayCollection;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @author    Patrick Rathje <pr@braune-digital.com>
+ * @copyright 2016 Braune Digital GmbH
+ */
+class ProjectController extends BaseApiController {
+
+    protected function getRepository() {
+        return $this->getDoctrine()->getRepository('BrauneDigitalDemoBundle:Project');
+    }
+
+    /**
+     *
+     * @ApiDoc(
+     *  resource=false,
+     *  section="Project",
+     *  description="Get a project by id",
+     *  requirements= {
+     *      {"name": "id", "description":"Project-ID", "dataType": "integer"},
+     *      {"name": "_format", "description":"Response-Format", "requirement": "json|xml|html", "dataType": "string"},
+     *     {"name": "version", "description":"API-Version", "requirement": "json|xml|html", "dataType": "integer"}
+     * }
+     *)
+     *
+     * @param Request $request
+     * @param $id
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Get("/projects/{id}", name="project_read", defaults={"_format": "json"})
+     */
+    public function readAction(Request $request, $id) {
+        return parent::readAction($request, $id);
+    }
+
+    /**
+     *
+     * @ApiDoc(
+     *  resource=false,
+     *  section="Project",
+     *  description="Get projects",
+     *  requirements= {
+     *      {"name": "_format", "description":"Response-Format", "requirement": "json|xml|html", "dataType": "string"},
+     *     {"name": "version", "description":"API-Version", "requirement": "json|xml|html", "dataType": "integer"}
+     *  }
+     *)
+     *
+     * @param Request $request
+     * @param $id
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Get("/projects", name="project_list", defaults={"_format": "json"})
+     */
+    public function listAction(Request $request) {
+        return parent::listAction($request);
+    }
+
+
+    /**
+     *
+     * @ApiDoc(
+     *  resource=false,
+     *  section="Project",
+     *  description="Create a project",
+     * requirements= {
+     *      {"name": "_format", "description":"Response-Format", "requirement": "json|xml|html", "dataType": "string"},
+     *     {"name": "version", "description":"API-Version", "requirement": "json|xml|html", "dataType": "integer"}
+     * },
+     *  input="BrauneDigital\DemoBundle\Form\Type\ProjectType"
+     *)
+     *
+     * @param Request $request
+     * @param $id
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Post("/projects", name="project_create", defaults={"_format": "json"})
+     */
+    public function createAction(Request $request, $entity = null, $refresh = false, $formOptions = null) {
+        $entity = new Project();
+        return parent::createAction($request, $entity);
+    }
+
+    /**
+     *
+     * @ApiDoc(
+     *  resource=false,
+     *  section="Project",
+     *  description="Update a project",
+     * requirements= {
+     *     {"name": "id", "description":"Project-ID", "dataType": "integer"},
+     *      {"name": "_format", "description":"Response-Format", "requirement": "json|xml|html", "dataType": "string"},
+     *     {"name": "version", "description":"API-Version", "requirement": "json|xml|html", "dataType": "integer"}
+     * },
+     *  input="BrauneDigital\DemoBundle\Form\Type\ProjectType"
+     *)
+     *
+     * @param Request $request
+     * @param $id
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Post("/projects/{id}", name="project_update", defaults={"_format": "json"})
+     */
+    public function updateAction(Request $request, $id, $refresh = false, $formOptions = null) {
+        return parent::updateAction($request, $id);
+    }
+
+    /**
+     *
+     * @ApiDoc(
+     *  resource=false,
+     *  section="Project",
+     *  description="Delete a project",
+     * requirements= {
+     *     {"name": "id", "description":"Project-ID", "dataType": "integer"},
+     *      {"name": "_format", "description":"Response-Format", "requirement": "json|xml|html", "dataType": "string"},
+     *     {"name": "version", "description":"API-Version", "requirement": "json|xml|html", "dataType": "integer"}
+     * }
+     *)
+     *
+     * @param Request $request
+     * @param $id
+     * @return \FOS\RestBundle\View\View
+     *
+     * @Rest\Delete("/projects/{id}", name="project_delete", defaults={"_format": "json"})
+     */
+    public function deleteAction(Request $request, $id) {
+        return parent::deleteAction($request, $id);
+    }
+
+    /**
+    * Override the getForm Method for create and update functionalities, you may want to return different forms accordings to the mode
+    **/
+    protected function getForm($entity, $mode = '', $options = array()) {
+        return $this->createForm(new ProjectType(), $entity, $options);
+    }
+}
+```
+You will have to specifiy a Repository and you may need to override the ```getForm``` function, if you want to create or update entities.
+### Security System
+To restrict the access to single resources you will need to use symfony voters. Take a look at the *BrauneDigital\ApiBaseBundle\Security\Authorization\Voter\BaseCrudVoter* which specifies the attributes that are used for the corresponding routes.
+### Filter the ListAction
+To filter list actions, one can override the ```createListQueryBuilder($alias = 'e')```method. The querybuilder can then be customized before returning.
+### Serialization Groups (JMSSerializerBundle required)
+Serialization Groups are used by the JMS Serializer to get a better control over the serialization process.
+
+#### In your controller
+You can easily Add Serialization Groups using ```$this->addSerializationGroup($group)``` or set them by calling ```$this->serializationGroups($groups)```.
+#### Using the API-Request Header
+Clients can also set serialization Groups by setting the ```serializationGroups```header in the request.
+The Header may be a simple string, comma delimited or an array of strings.
+
+
 ### Api-Key Authentication
 In order to use api-tokens, you have to add a token to your User-Class:
 ```php
