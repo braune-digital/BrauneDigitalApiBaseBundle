@@ -360,7 +360,7 @@ Example:
 ```
 
 ### Variable Configuration
-You can set the *_braune_digital_api_base_config* attribute in your request to append your custom configuration to your response:  
+You can set the *_braune_digital_api_base_config* attribute in your request to append your custom configuration (*braune_digital_api_base.configuration*) to your response:  
 ```php
 //send configuration
 $request->attributes->set('_braune_digital_api_base_config', true);
