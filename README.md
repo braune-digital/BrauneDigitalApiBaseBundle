@@ -41,6 +41,7 @@ public function registerBundles()
 braune_digital_api_base:
     modules: ~ #Used for Module-Access
     timeout: 0 # Timeout for Api-Tokens (use 0 for no timeout)
+    configuration: # Your configuration to be send
 ```
 
 ###  FOSRest Configuration
@@ -112,8 +113,8 @@ providers:
                 authenticator: braune_digital_api_base.security.apikey_authenticator #use apikeys for authentication
             provider: braune_digital_api_base #use apikeys for authentication
 ```
-
-## Api-Key Authentication
+## Usage
+### Api-Key Authentication
 In order to use api-tokens, you have to add a token to your User-Class:
 ```php
     protected $token;
@@ -143,16 +144,60 @@ fields:
         nullable: true
 ```
 
-## Module Access
+### Module Access
 This Bundle provides a Module-Access Annotation, which can be used to restrict the access of specific routes to certain Roles.
+In contrast to the Symfony Voting system, this is based on api-endpoints and not on ressources.
+Import the annotation:
+```php
+use BrauneDigital\ApiBaseBundle\Annotation\ModuleAccess;
+```
+Add your modules:
+```php
+@ModuleAccess({"products", "sales"})
+```
+Or if you only use a single module:
 
-## Variable Configuration
+```php
+@ModuleAccess("products")
+```
+If the user has access to one of the modules, access will be granted.
+Define the Modules in your configuration:
+```yaml
+braune_digital_api_base:
+  modules:
+    products:
+        roles: ['ROLE_ADMIN', 'ROLE_CLIENT']
+    sales:
+        roles: ['ROLE_SALESMAN']
+```
+Example:
+```php
+    /**
+     * @ApiDoc(
+     *  resource=false,
+     *  section="Your Section",
+     *  description="A nice description",
+     *  requirements= {
+     *      {"name": "_format", "description":"Response-Format", "requirement": "json|xml|html", "dataType": "string"}
+     * }
+     *)
+     * @Rest\Get("/products")
+     * @ModuleAccess({"products", "sales"})
+     * @param Request $request
+     * @return mixed
+     */
+    public function listAction(Request $request) {
+        return parent::listAction($request);
+    }
+```
+
+### Variable Configuration
 You can set the *_braune_digital_api_base_config* attribute in your request to append your custom configuration to your response:  
 ```php
 //send configuration
 $request->attributes->set('_braune_digital_api_base_config', true);
 ```
-The configuration will be available under *configuration*
+The configuration will be available under the key *configuration* in your response.
 ## Suggestions  
 ### Api-Documentation
 We suggest the usage of [NelmioApiDocBundle](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst) for a clean and easy to use api documentation.
