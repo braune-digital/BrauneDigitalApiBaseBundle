@@ -13,11 +13,11 @@
 * JMSSerializerBundle
 ## Installation
 
-Download using composer:
+### Download using composer:
 ```bash
 composer require braune-digital/api-base-bundle
 ```  
-And enable the Bundle in your AppKernel.  
+### And enable the Bundle in your AppKernel.  
 You may use the BaseApiController without registering the bundle too.
 
 ```php
