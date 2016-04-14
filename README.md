@@ -7,10 +7,11 @@
 * Query-Filtering: Filter Lists (coming soon)
 * Module Access: Split your Api into modules and restrict their access to certain user roles
 * Custom Configuration in Response: Add your custom configuration to specific responses
+  
 ## Requirements
 * FOSRestBundle
 * WhiteOctoberPagerFantaBundle
-* JMSSerializerBundle  
+* JMSSerializerBundle (optional)
   
 
 ## Installation
@@ -114,7 +115,7 @@ providers:
             provider: braune_digital_api_base #use apikeys for authentication
 ```
 ## Usage
-## BaseApiController
+### BaseApiController
 The BaseApiController provides the underlying logic to create api-endpoints fast and easy: Just extend the *BrauneDigital\ApiBaseBundle\Controller\BaseApiController* and add your functions:
 ```php
 <?php
@@ -271,7 +272,7 @@ You will have to specifiy a Repository and you may need to override the ```getFo
 ### Security System
 To restrict the access to single resources you will need to use symfony voters. Take a look at the *BrauneDigital\ApiBaseBundle\Security\Authorization\Voter\BaseCrudVoter* which specifies the attributes that are used for the corresponding routes.
 ### Filter the ListAction
-To filter list actions, one can override the ```createListQueryBuilder($alias = 'e')``` method. The querybuilder can then be customized before returning.
+To filter list actions, one can override the ```createListQueryBuilder($alias = 'e')``` method. The querybuilder can be customized before returning.
 ### Serialization Groups (JMSSerializerBundle required)
 Serialization Groups are used by the JMS Serializer to get a better control over the serialization process.
 
@@ -280,7 +281,6 @@ You can easily Add Serialization Groups using ```$this->addSerializationGroup($g
 #### Using the API-Request Header
 Clients can also set serialization Groups by setting the ```serializationGroups```header in the request.
 The Header may be a simple string, comma delimited or an array of strings.
-
 
 ### Api-Key Authentication
 In order to use api-tokens, you have to add a token to your User-Class:
@@ -369,3 +369,4 @@ The configuration will be available under the key *configuration* in your respon
 ## Suggestions  
 ### Api-Documentation
 We suggest the usage of [NelmioApiDocBundle](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst) for a clean and easy to use api documentation.
+### JMSSerializerBundle
