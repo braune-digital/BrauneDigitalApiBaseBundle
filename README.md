@@ -1,6 +1,43 @@
 # BrauneDigitalApiBaseBundle
 
-##  FOSRest Configuration
+## Features
+* BaseApiController: A foundation for your api controllers
+* ApiKey authentication: Authenticate users using an api-token
+* Pagination
+* Query-Filtering: Filter Lists (coming soon)
+
+## Requirements
+* FOSRestBundle
+* WhiteOctoberPagerFantaBundle
+* JMSSerializerBundle
+## Installation
+
+Download using composer:
+```bash
+composer require braune-digital/api-base-bundle
+```  
+And enable the Bundle in your AppKernel (if you need the api-key authentication).  
+You may use the BaseApiController on its own too.
+
+```php
+public function registerBundles()
+    {
+        $bundles = array(
+          ...
+          new BrauneDigital\RedirectBundle\BrauneDigitalRedirectBundle(),
+          ...
+        );
+```
+## Configuration
+### DefaultConfiguration
+```yaml
+braune_digital_api_base:
+    modules: ~ #Used for Module-Access
+    timeout: 0 # Timeout for Api-Tokens (use 0 for no timeout)
+```
+
+###  FOSRest Configuration  
+Use of the 
 ```
 fos_rest:
     disable_csrf_role: ROLE_API
@@ -24,7 +61,8 @@ fos_rest:
 ```
 
 
-## NelmioCors Configuration
+### NelmioCors Configuration
+To support OPTIONS calls from your clients.
 ```
 nelmio_cors:
    defaults:
@@ -46,13 +84,13 @@ nelmio_cors:
 ```
 
 
-## Security.yml Configuration 
+### Security.yml Configuration 
 ```
 providers:
     braune_digital_api_base:
             id: braune_digital_api_base.security.apikey_user_provider
     firewalls:
-        api_doc:
+        api_doc: #Open API Documentation
             pattern: ^/api/doc
             anonymous: true
             security: false
@@ -62,10 +100,54 @@ providers:
         api_password_reset:
             pattern: ^/api/v1/password-((request$)|(reset$))
             anonymous: true
-        api:
+        api: #Secured API-Area
             pattern: ^/api
-            stateless: true
+            stateless: true #we are using tokens
             simple_preauth:
-                authenticator: braune_digital_api_base.security.apikey_authenticator
-            provider: braune_digital_api_base
+                authenticator: braune_digital_api_base.security.apikey_authenticator #use apikeys for authentication
+            provider: braune_digital_api_base #use apikeys for authentication
 ```
+
+## Api-Key Authentication
+In order to use api-tokens, you have to add a token to your User-Class:
+```php
+    protected $token;
+    
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+```
+
+And add your DB-Mapping (e.g. DoctrineORM):
+```yaml 
+fields:
+    token:
+        type: string
+        nullable: true
+```
+
+## Module Access
+This Bundle provides a Module-Access Annotation, which can be used to restrict the access of specific routes to certain Roles.
+
+## Variable Configuration
+You can set the *_braune_digital_api_base_config* attribute in your request to append your custom configuration to your response:  
+```php
+//send configuration
+$request->attributes->set('_braune_digital_api_base_config', true);
+```
+The configuration will be available under *configuration*
+## Suggestions  
+### Api-Documentation
+We suggest the usage of [NelmioApiDocBundle](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst) for a clean and easy to use api documentation.
