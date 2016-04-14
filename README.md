@@ -232,7 +232,8 @@ class ProjectController extends BaseApiController {
      * @Rest\Post("/projects/{id}", name="project_update", defaults={"_format": "json"})
      */
     public function updateAction(Request $request, $id, $refresh = false, $formOptions = null) {
-        return parent::updateAction($request, $id);
+        //add validation groups
+        return parent::updateAction($request, $id, false, array('validation_groups' => array('ProjectUpdate')));
     }
 
     /**
@@ -270,7 +271,7 @@ You will have to specifiy a Repository and you may need to override the ```getFo
 ### Security System
 To restrict the access to single resources you will need to use symfony voters. Take a look at the *BrauneDigital\ApiBaseBundle\Security\Authorization\Voter\BaseCrudVoter* which specifies the attributes that are used for the corresponding routes.
 ### Filter the ListAction
-To filter list actions, one can override the ```createListQueryBuilder($alias = 'e')```method. The querybuilder can then be customized before returning.
+To filter list actions, one can override the ```createListQueryBuilder($alias = 'e')``` method. The querybuilder can then be customized before returning.
 ### Serialization Groups (JMSSerializerBundle required)
 Serialization Groups are used by the JMS Serializer to get a better control over the serialization process.
 
