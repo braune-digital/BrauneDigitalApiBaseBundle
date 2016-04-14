@@ -10,7 +10,9 @@
 ## Requirements
 * FOSRestBundle
 * WhiteOctoberPagerFantaBundle
-* JMSSerializerBundle
+* JMSSerializerBundle  
+  
+
 ## Installation
 
 ### Download using composer:
