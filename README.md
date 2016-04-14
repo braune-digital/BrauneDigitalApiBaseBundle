@@ -43,8 +43,7 @@ braune_digital_api_base:
     timeout: 0 # Timeout for Api-Tokens (use 0 for no timeout)
 ```
 
-###  FOSRest Configuration  
-Use of the 
+###  FOSRest Configuration
 ```
 fos_rest:
     disable_csrf_role: ROLE_API
@@ -66,7 +65,6 @@ fos_rest:
         messages:
             'Doctrine\ORM\EntityNotFoundException': false
 ```
-
 
 ### NelmioCors Configuration
 To support OPTIONS calls from your clients.
