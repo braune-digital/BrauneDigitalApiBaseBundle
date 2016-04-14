@@ -1,5 +1,5 @@
 # BrauneDigitalApiBaseBundle
-This Symfony-Bundle provides basic functionality for simple and clean apis.
+This Symfony-Bundle provides basic functionality for simple and clean APIs.
 ## Features
 * BaseApiController: A foundation for your api controllers
 * ApiKey authentication: Authenticate users using an api-token
