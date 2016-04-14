@@ -16,15 +16,19 @@ Download using composer:
 ```bash
 composer require braune-digital/api-base-bundle
 ```  
-And enable the Bundle in your AppKernel (if you need the api-key authentication).  
-You may use the BaseApiController on its own too.
+And enable the Bundle in your AppKernel.  
+You may use the BaseApiController without registering the bundle too.
 
 ```php
 public function registerBundles()
     {
         $bundles = array(
           ...
-          new BrauneDigital\RedirectBundle\BrauneDigitalRedirectBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+
+            new BrauneDigital\ApiBaseBundle\BrauneDigitalApiBaseBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
           ...
         );
 ```
