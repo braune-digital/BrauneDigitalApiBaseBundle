@@ -5,7 +5,8 @@
 * ApiKey authentication: Authenticate users using an api-token
 * Pagination
 * Query-Filtering: Filter Lists (coming soon)
-
+* Module Access: Split your Api into modules and restrict their access to certain user roles
+* Custom Configuration in Response: Add your custom configuration to specific responses
 ## Requirements
 * FOSRestBundle
 * WhiteOctoberPagerFantaBundle
