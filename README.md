@@ -18,7 +18,7 @@ This Symfony-Bundle uses FOS Rest and provides Basic Api functionality
 
 ### Download using composer:
 ```bash
-composer require braune-digital/api-base-bundle
+composer require braune-digital/api-base-bundle "~1.0"
 ```  
 ### And enable the Bundle in your AppKernel.  
 You may use the BaseApiController without registering the bundle too.
