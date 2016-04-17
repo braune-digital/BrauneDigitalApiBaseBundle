@@ -11,6 +11,7 @@ This Symfony-Bundle uses FOS Rest and provides Basic Api functionality
 ## Requirements
 * FOSRestBundle
 * WhiteOctoberPagerFantaBundle
+* FOSUserBundle (for now)
 * JMSSerializerBundle (optional)
   
 
@@ -18,7 +19,7 @@ This Symfony-Bundle uses FOS Rest and provides Basic Api functionality
 
 ### Download using composer:
 ```bash
-composer require braune-digital/api-base-bundle
+composer require braune-digital/api-base-bundle "1.*"
 ```  
 ### And enable the Bundle in your AppKernel.  
 You may use the BaseApiController without registering the bundle too.
@@ -370,3 +371,6 @@ The configuration will be available under the key *configuration* in your respon
 ### Api-Documentation
 We suggest the usage of [NelmioApiDocBundle](https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst) for a clean and easy to use api documentation.
 ### JMSSerializerBundle
+
+## TODO
+* Check for FOSUserBundle before initializing services
