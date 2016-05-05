@@ -19,17 +19,23 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, Authentica
      */
     protected $timeout;
 
-    public function __construct($timeout) {
+    /**
+     * @var string
+     */
+    protected $fieldName;
+
+    public function __construct($timeout, $fieldName = 'apiKey') {
         $this->timeout = $timeout;
+        $this->fieldName = 'apiKey';
     }
     public function createToken(Request $request, $providerKey)
     {
         // lookup the api key in the header
-        $apiKey = $request->headers->get('apiKey');
+        $apiKey = $request->headers->get($this->fieldName);
         if (!$apiKey) {
 
             //use the query parameter as a fallback
-            $apiKey = $request->query->get('apiKey');
+            $apiKey = $request->query->get($this->fieldName);
             if(!$apiKey) {
                 throw new BadCredentialsException('No API key found');
             }

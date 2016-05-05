@@ -1,7 +1,10 @@
+parameters:
+    braune_digital_api_base.security.apikey_authenticator.field_name: 'apiKey'
+
 services:
     braune_digital_api_base.security.apikey_authenticator:
         class:  'BrauneDigital\ApiBaseBundle\Security\ApiKeyAuthenticator'
-        arguments: ['%braune_digital_api_base.timeout%']
+        arguments: ['%braune_digital_api_base.timeout%', '%braune_digital_api_base.security.apikey_authenticator.field_name%']
         public: false
     braune_digital_api_base.security.apikey_user_provider:
         class: 'BrauneDigital\ApiBaseBundle\Security\ApiKeyUserProvider'
