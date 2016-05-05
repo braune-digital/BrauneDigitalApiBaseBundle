@@ -26,7 +26,7 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, Authentica
 
     public function __construct($timeout, $fieldName = 'apiKey') {
         $this->timeout = $timeout;
-        $this->fieldName = 'apiKey';
+        $this->fieldName = $fieldName;
     }
     public function createToken(Request $request, $providerKey)
     {
