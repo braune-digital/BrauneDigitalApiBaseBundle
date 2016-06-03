@@ -24,18 +24,24 @@ class RangeHeaderListener
 		if (!$event->isMasterRequest()) {
 			return;
 		}
-		if ('json' !== $event->getRequest()->getRequestFormat()) {
+
+		$request = $event->getRequest();
+		if ('json' !== $request->getRequestFormat() && !$request->isXmlHttpRequest()) {
 			return;
+		}
+
+		if ($request->query->has('maxPerPage') || $request->query->has('currentPage')) {
+			return; //DO not override manual page requests
 		}
 
 		$offset = 0;
 		$limit  = 49;
 
-		if ($event->getRequest()->headers->get('Range')) {
-			list($offset, $limit) = explode('-', $event->getRequest()->headers->get('Range'));
+		if ($request->headers->get('Range')) {
+			list($offset, $limit) = explode('-', $request->headers->get('Range'));
 		}
 
-		$event->getRequest()->query->add([
+		$request->query->add([
 			'maxPerPage'  => intval(($limit - $offset) + 1),
 			'currentPage' => intval($offset / (($limit - $offset) + 1) + 1)
 		]);

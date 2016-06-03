@@ -65,7 +65,12 @@ abstract class BaseApiController extends FOSRestController
     protected function pagerfantaResponseView(Pagerfanta $pagerfanta, $resultsCallback = null) {
 
         try {
-            $results = iterator_to_array($pagerfanta->getCurrentPageResults());
+
+            $results = $pagerfanta->getCurrentPageResults();
+
+            if (!is_array($results)) {
+                $results = iterator_to_array($results);
+            }
         }
         catch(\Exception $e) {
             throw $e;
@@ -216,7 +221,14 @@ abstract class BaseApiController extends FOSRestController
 
         //check if we want to paginate
         if(!$page && !$maxPerPage) {
-            $view = $this->responseView($qb->getQuery()->getResult());
+
+            $results = $qb->getQuery()->getResult();
+
+            if (is_callable($resultsCallback)) {
+                $resultsCallback($results);
+            }
+
+            $view = $this->responseView($results);
             return $this->handleView($view, $request);
         }
 

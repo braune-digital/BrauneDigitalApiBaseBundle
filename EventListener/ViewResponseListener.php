@@ -33,5 +33,7 @@ class ViewResponseListener {
             }
             $event->setControllerResult($result);
         }
+
+        
     }
 }
