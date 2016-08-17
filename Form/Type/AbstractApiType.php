@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AbstractApiType extends AbstractType {
+abstract class AbstractApiType extends AbstractType {
 
     private static $apiRequestHandler;
 
