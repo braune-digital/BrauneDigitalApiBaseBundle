@@ -163,8 +163,8 @@ abstract class BaseApiController extends FOSRestController
         $filterConfig = null;
         $orderConfig = null;
 
-        if($this->container->has('braune_digital_query_filter_bundle.manager')) {
-            $queryManager = $this->get('braune_digital_query_filter_bundle.manager');
+        if($this->container->has('bd_query_filter.query_manager')) {
+            $queryManager = $this->get('bd_query_filter.query_manager');
             $filterConfig = json_decode($request->query->get('filter'), true);
             $orderConfig = json_decode($request->query->get('order'), true);
 
