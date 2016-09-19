@@ -9,17 +9,6 @@ services:
     braune_digital_api_base.security.apikey_user_provider:
         class: 'BrauneDigital\ApiBaseBundle\Security\ApiKeyUserProvider'
         arguments: ['@fos_user.user_manager']
-    braune_digital_api_base.module_access_subscriber:
-        class: 'BrauneDigital\ApiBaseBundle\EventListener\ModuleAccessSubscriber'
-        arguments:
-            - '@security.context'
-            - '@security.authentication.trust_resolver'
-            - '@security.role_hierarchy'
-            - '@security.token_storage'
-            - '@security.authorization_checker'
-            - "%braune_digital_api_base.modules%"
-        tags:
-            - {name: kernel.event_subscriber}
     braune_digital_api_base.view_response_listener:
         class: 'BrauneDigital\ApiBaseBundle\EventListener\ViewResponseListener'
         arguments:
