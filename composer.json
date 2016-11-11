@@ -2,10 +2,16 @@
     "name" : "braune-digital/api-base-bundle",
     "description" : "Api bundle",
     "type" : "symfony-bundle",
-    "authors" : [{
-        "name" : "Braune Digital GmbH",
-        "email" : "mail@braune-digital.com"
-    }],
+    "authors" : [
+        {
+            "name" : "Braune Digital GmbH",
+            "email" : "mail@braune-digital.com"
+        },
+        {
+            "name" : "Patrick Rathje",
+            "email" : "pr@braune-digital.com"
+        }
+    ],
     "keywords" : [
         "rest api"
     ],
@@ -15,7 +21,8 @@
     "require" : {
         "white-october/pagerfanta-bundle": "^1.0.0",
         "nelmio/cors-bundle": "^1.4.0",
-        "friendsofsymfony/rest-bundle": "^1.7"
+        "friendsofsymfony/rest-bundle": "^2.0",
+        "symfony/security": "~3.0"
     },
     "suggest" : {
         "jms/serializer-bundle": "Used for better serialization control",
