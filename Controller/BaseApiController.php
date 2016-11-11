@@ -4,9 +4,9 @@ namespace BrauneDigital\ApiBaseBundle\Controller;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\QueryBuilder;
+use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use JMS\Serializer\SerializationContext;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
@@ -14,14 +14,13 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\HttpFoundation\Request;
 use BrauneDigital\ApiBaseBundle\Exception\InvalidPageNumberException;
-use BrauneDigital\ActivityBundle\Event\ActivityEvent;
 
 abstract class BaseApiController extends FOSRestController
 {
     /**
-     * @var SerializationContext
+     * @var Context
      */
-    private $serializationContext;
+    private $context;
 
     /**
      * @var array
@@ -118,13 +117,14 @@ abstract class BaseApiController extends FOSRestController
             }
         }
 
-        $context = $this->getSerializationContext();
+        $context = $this->getContext();
 
         if(count($this->getSerializationGroups()) > 0) {
             $context->setGroups($this->getSerializationGroups());
         }
 
-        $view->setSerializationContext($context);
+
+        $view->setContext($context);
 
         //rest is handled by the view handler
         return $view;
@@ -452,26 +452,6 @@ abstract class BaseApiController extends FOSRestController
     }
 
     /**
-     * Fires an event for any activity listener
-     * @param $type
-     * @param null $data
-     * @param null $user
-     */
-    protected function activityEvent($type, array $tags = array(), $data = null, $user = null) {
-
-        if(!class_exists('BrauneDigital\ActivityBundle\Event\ActivityEvent')) {
-            throw new \Exception("You need to install the BrauneDigitalActivityBundle to use this function!");
-        }
-
-        if(!$user) {
-            $user = $this->getUser();
-        }
-        //fire login event
-        $event = new ActivityEvent($type, $user, $tags, $data);
-        $this->get('event_dispatcher')->dispatch(ActivityEvent::EVENT_ID, $event);
-    }
-
-    /**
      * @param $entity
      * @param string $mode
      * @param array $options
@@ -516,14 +496,14 @@ abstract class BaseApiController extends FOSRestController
     }
 
     /**
-     * @return SerializationContext
+     * @return Context
      * Getter with lazy creation
      */
-    protected function getSerializationContext() {
-        if($this->serializationContext == null) {
-            $this->serializationContext = SerializationContext::create();
+    protected function getContext() {
+        if($this->context == null) {
+            $this->context = new Context();
         }
-        return $this->serializationContext;
+        return $this->context;
     }
 
     /**
