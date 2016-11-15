@@ -27,7 +27,7 @@ class ApiKeyUserProvider extends UserProvider
 				->leftJoin('u.tokens', 't')
 				->where($qb->expr()->eq('t.token', $qb->expr()->literal($apiKey)))
 				->andWhere($qb->expr()->gte('t.expiresAt', ':now'))
-				->setParameter('now', new \DateTime('-5 second'), \Doctrine\DBAL\Types\Type::DATETIME)
+				->setParameter('now', new \DateTime(), \Doctrine\DBAL\Types\Type::DATETIME)
 				->setMaxResults(1)
 			;
 			try {
