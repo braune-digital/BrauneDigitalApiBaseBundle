@@ -22,6 +22,7 @@ class BrauneDigitalApiBaseExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('braune_digital_api_base.features', $config['features']);
         $container->setParameter('braune_digital_api_base.modules', $config['modules']);
         $container->setParameter('braune_digital_api_base.timeout', $config['timeout']);
 

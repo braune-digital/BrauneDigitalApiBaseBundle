@@ -17,10 +17,17 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('braune_digital_api_base');
 
         $rootNode->children()
-                        ->integerNode('timeout')
-                            ->defaultValue(0)
-                        ->end()
-                    ->end();
+			->arrayNode('features')
+				->children()
+					->booleanNode('use_token_relation')
+						->defaultValue(false)
+					->end()
+				->end()
+			->end()
+			->integerNode('timeout')
+				->defaultValue(0)
+			->end()
+		->end();
 
 
         $rootNode->children()->variableNode('configuration');
