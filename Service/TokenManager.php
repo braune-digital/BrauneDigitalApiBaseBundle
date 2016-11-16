@@ -46,7 +46,7 @@ class TokenManager  {
 			$token = $this->container->get('doctrine')->getRepository('BrauneDigitalApiBaseBundle:Token')->findOneBy([
 				'token' => $apiKey
 			]);
-			$expiresAt = clone $token->getExpiresAt();
+			$expiresAt = new \DateTime();
 			$expiresAt->modify('+' . (intval($this->container->getParameter('braune_digital_api_base.timeout')) / 1000) . ' seconds');
 			$token->setExpiresAt($expiresAt);
 			$em = $this->container->get('doctrine')->getManager();
