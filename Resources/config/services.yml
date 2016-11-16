@@ -30,3 +30,7 @@ services:
         arguments: ['@service_container']
         tags:
             - { name: doctrine.event_subscriber }
+
+    braune_digital_api_base.service.token_manager:
+        class: BrauneDigital\ApiBaseBundle\Service\TokenManager
+        arguments: ['@service_container']
