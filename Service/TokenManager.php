@@ -3,6 +3,7 @@
 namespace BrauneDigital\ApiBaseBundle\Service;
 
 use BrauneDigital\ApiBaseBundle\Entity\Token;
+use Doctrine\ORM\NoResultException;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -39,15 +40,23 @@ class TokenManager  {
 	 * @param UserInterface $user
 	 * @return Token
 	 */
-	public function refreshToken(UserInterface $user) {
-		foreach ($user->getTokens() as $token) {
-			$expiresAt = clone $user->getLastLogin();
+	public function refreshToken($apiKey) {
+
+		try {
+			$token = $this->container->get('doctrine')->getRepository('BrauneDigitalApiBaseBundle:Token')->findOneBy([
+				'token' => $apiKey
+			]);
+			$expiresAt = clone $token->getExpiresAt();
 			$expiresAt->modify('+' . (intval($this->container->getParameter('braune_digital_api_base.timeout')) / 1000) . ' seconds');
 			$token->setExpiresAt($expiresAt);
 			$em = $this->container->get('doctrine')->getManager();
 			$em->persist($token);
 			$em->flush();
+
+		} catch (NoResultException $e) {
+			// Don't do anything here.
 		}
+
 	}
 
 	/**
@@ -63,6 +72,8 @@ class TokenManager  {
 
 		$qb
 			->where($qb->expr()->eq('t.user', $user->getId()))
+			->andWhere($qb->expr()->lt('t.expiresAt', ':now'))
+			->setParameter('now', new \DateTime(), \Doctrine\DBAL\Types\Type::DATETIME)
 		;
 
 		$tokens = $qb->getQuery()->getResult();

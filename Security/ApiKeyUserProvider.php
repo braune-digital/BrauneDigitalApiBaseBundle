@@ -30,7 +30,9 @@ class ApiKeyUserProvider extends UserProvider
 				->setMaxResults(1)
 			;
 			try {
-				return $qb->getQuery()->getSingleResult();
+				$user = $qb->getQuery()->getSingleResult();
+				$this->container->get('braune_digital_api_base.service.token_manager')->refreshToken($apiKey);
+				return $user;
 			} catch (NoResultException $e) {
 				return false;
 			}
