@@ -17,7 +17,7 @@ class SerializationListener
 		$this->config = $config;
 
 		if (!array_key_exists('allow_custom_groups', $this->config)) {
-			$this->config['allow_custom_groups'] = false;
+			$this->config['allow_custom_groups'] = true;
 		}
 
 		if (!array_key_exists('custom_groups_key', $this->config) || !$this->config['custom_groups_key']) {
