@@ -2,6 +2,7 @@
 
 namespace BrauneDigital\ApiBaseBundle\Controller;
 
+use BrauneDigital\ApiBaseBundle\EventListener\SerializationListener;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Context\Context;
@@ -110,7 +111,8 @@ abstract class BaseApiController extends FOSRestController
 
         //merge serialization groups
         if($request) {
-            $requestGroups = $this->getRequestSerializationGroups($request);
+            //get serialization groups from request
+            $requestGroups = $request->attributes->get(SerializationListener::SERIALIZATION_GROUP_KEY, []);
 
             foreach($requestGroups as $serializationGroup) {
                 $this->addSerializationGroup($serializationGroup);
@@ -390,23 +392,6 @@ abstract class BaseApiController extends FOSRestController
 
         }
         throw new \LogicException("Check your implementation of the getForm function!");
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function getRequestSerializationGroups(Request $request) {
-
-        $headerSerializerGroups = $request->headers->get('serializationGroups');
-        if ($headerSerializerGroups && is_string($headerSerializerGroups)) {
-            $headerSerializerGroups = explode(',', $headerSerializerGroups);
-        }
-
-        if ($headerSerializerGroups && is_array($headerSerializerGroups)) {
-            return $headerSerializerGroups;
-        }
-
-        return array();
     }
 
     /**

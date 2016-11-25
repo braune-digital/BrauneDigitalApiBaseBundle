@@ -21,7 +21,7 @@ services:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 101}
 
     braune_digital_api_base.event_listener.range_header_listener:
-        class: BrauneDigital\ApiBaseBundle\EventListener\RangeHeaderListener
+        class: 'BrauneDigital\ApiBaseBundle\EventListener\RangeHeaderListener'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest  }
 
