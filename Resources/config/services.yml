@@ -41,3 +41,8 @@ services:
         arguments: ['@validator']
         tags:
             - { name: form.type_extension, extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType'  }
+
+    braune_digital_api_base.validation.group_resolver:
+        class: 'BrauneDigital\ApiBaseBundle\Validation\ValidationRequestGroupResolver'
+        arguments:
+            - "@request_stack"

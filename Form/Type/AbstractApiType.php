@@ -5,7 +5,7 @@ use BrauneDigital\ApiBaseBundle\Form\ApiRequestHandler;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use VSF\FahrschuleFlorin\BaseBundle\Validation\ValidationRequestGroupResolver;
+use BrauneDigital\ApiBaseBundle\Validation\ValidationRequestGroupResolver;
 
 abstract class AbstractApiType extends AbstractType {
 
