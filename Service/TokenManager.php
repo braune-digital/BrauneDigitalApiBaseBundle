@@ -27,7 +27,7 @@ class TokenManager  {
 		$user->setLastLogin(new \DateTime());
 		$token = new Token($this->generateToken(), $user);
 		$expiresAt = clone $user->getLastLogin();
-		$expiresAt->modify('+' . (intval($this->container->getParameter('braune_digital_api_base.timeout')) / 1000) . ' seconds');
+		$expiresAt->modify('+' . (intval($this->container->getParameter('braune_digital_api_base.timeout'))) . ' seconds');
 		$token->setExpiresAt($expiresAt);
 		$user->addToken($token);
 		$this->container->get('doctrine')->getManager()->persist($token);
