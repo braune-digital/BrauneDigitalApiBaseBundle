@@ -2,16 +2,13 @@
 
 namespace BrauneDigital\ApiBaseBundle\Security;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
-use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Security\UserProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiKeyUserProvider extends UserProvider
 {
-
 	/**
 	 * @var ContainerInterface
 	 */
@@ -21,7 +18,7 @@ class ApiKeyUserProvider extends UserProvider
 	{
 		$features = $this->container->getParameter('braune_digital_api_base.features');
 		if ($features['use_token_relation']) {
-			$qb = $this->container->get('doctrine')->getRepository('VSFFahrschuleFlorinBaseBundle:User')->createQueryBuilder('u');
+			$qb = $this->container->get('doctrine')->getRepository($this->userManager->getClass())->createQueryBuilder('u');
 			$qb
 				->leftJoin('u.tokens', 't')
 				->where($qb->expr()->eq('t.token', $qb->expr()->literal($apiKey)))
