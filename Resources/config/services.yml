@@ -34,7 +34,7 @@ services:
 
     braune_digital_api_base.service.token_manager:
         class: 'BrauneDigital\ApiBaseBundle\Service\TokenManager'
-        arguments: ['@service_container']
+        arguments: ['@service_container', '%braune_digital_api_base.security.apikey_authenticator.field_name%']
 
     braune_digital_api_base.type_extension.form.validator:
         class: 'BrauneDigital\ApiBaseBundle\Form\Extension\Validator\Type\ApiFormTypeValidatorExtension'

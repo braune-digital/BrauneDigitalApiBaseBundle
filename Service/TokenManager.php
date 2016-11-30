@@ -6,16 +6,20 @@ use BrauneDigital\ApiBaseBundle\Entity\Token;
 use Doctrine\ORM\NoResultException;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class TokenManager  {
 
     protected $container;
 
+	protected $fieldname;
+
     /**
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container, $fieldname) {
         $this->container = $container;
+        $this->fieldname = $fieldname;
     }
 
 	/**
@@ -60,9 +64,27 @@ class TokenManager  {
 	}
 
 	/**
+	 * @param Request $request
+	 */
+	public function onLogout(Request $request, UserInterface $user = null) {
+		$apiKey = $request->headers->get($this->fieldname);
+		if ($apiKey) {
+			$token = $this->container->get('doctrine')->getRepository('BrauneDigitalApiBaseBundle:Token')->findOneBy([
+				'token' => $apiKey
+			]);
+			$em = $this->container->get('doctrine')->getManager();
+			$em->remove($token);
+			$em->flush();
+		} else if ($user) {
+			$this->cleanupTokens($user);
+		}
+
+	}
+
+	/**
 	 * @param UserInterface $user
 	 */
-	private function cleanupTokens(UserInterface $user) {
+	public function cleanupTokens(UserInterface $user) {
 
 		$qb = $this->container
 			->get('doctrine')
