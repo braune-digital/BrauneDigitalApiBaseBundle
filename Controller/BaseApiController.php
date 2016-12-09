@@ -502,7 +502,7 @@ abstract class BaseApiController extends FOSRestController
         $entity = $repo->findOneById($id);
 
         if($entity == null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('Entity could not be found.');
         }
 
         return $entity;
