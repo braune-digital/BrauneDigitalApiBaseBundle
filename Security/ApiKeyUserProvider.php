@@ -2,10 +2,7 @@
 
 namespace BrauneDigital\ApiBaseBundle\Security;
 
-<<<<<<< Updated upstream
-=======
 use Doctrine\ORM\NoResultException;
->>>>>>> Stashed changes
 use FOS\UserBundle\Security\UserProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -17,12 +14,6 @@ class ApiKeyUserProvider extends UserProvider
      */
     protected $container;
 
-<<<<<<< Updated upstream
-	public function getUserForApiKey($apiKey)
-	{
-		return $this->userManager->findUserBy(array('token' => $apiKey));
-	}
-=======
     public function getUserForApiKey($apiKey)
     {
         $features = $this->container->getParameter('braune_digital_api_base.features');
@@ -59,5 +50,4 @@ class ApiKeyUserProvider extends UserProvider
     }
 
 
->>>>>>> Stashed changes
 }
