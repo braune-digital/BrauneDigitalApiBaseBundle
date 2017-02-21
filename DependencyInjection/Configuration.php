@@ -17,10 +17,35 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('braune_digital_api_base');
 
         $rootNode->children()
-                        ->integerNode('timeout')
-                            ->defaultValue(0)
+            ->arrayNode('features')
+                ->children()
+                    ->booleanNode('use_token_relation')
+                        ->defaultValue(false)
+                    ->end()
+                    ->arrayNode('serialization')
+                        ->children()
+                            ->booleanNode('route_as_default')
+                                ->defaultValue(false)
+                            ->end()
+                            ->scalarNode('custom_groups_key')
+                                ->defaultValue('serializationGroups')
+                            ->end()
+                            ->booleanNode('allow_custom_groups')
+                                ->defaultValue(true)
+                            ->end()
+                            ->arrayNode('default_groups')
+                                ->prototype('scalar')->end()
+                            ->defaultValue(array('Default'))//default JMS Serialization Group => include properties which got no groups defined
                         ->end()
-                    ->end();
+                    ->end()
+                ->end()
+            ->end();
+
+        $rootNode->children()
+            ->integerNode('timeout')
+            ->defaultValue(0)
+            ->end()
+            ->end();
 
 
         $rootNode->children()->variableNode('configuration');
@@ -38,19 +63,18 @@ class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-                ->arrayNode('modules')
-                    ->useAttributeAsKey('module')
-                    ->normalizeKeys(false)
-                    ->prototype('array')
-                        ->children()
-                            ->arrayNode('roles')
-                                ->prototype('scalar')->end()
-                                ->defaultValue(array())
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
+            ->arrayNode('modules')
+            ->useAttributeAsKey('module')
+            ->normalizeKeys(false)
+            ->prototype('array')
+            ->children()
+            ->arrayNode('roles')
+            ->prototype('scalar')->end()
+            ->defaultValue(array())
             ->end()
-        ;
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 }

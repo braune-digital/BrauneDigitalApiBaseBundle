@@ -1,0 +1,20 @@
+BrauneDigital\ApiBaseBundle\Entity\Token:
+    type: entity
+    table: bd_api_token
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        token:
+            type: string
+            nullable: true
+        expiresAt:
+            type: datetime
+            nullable: true
+    manyToOne:
+        user:
+            targetEntity: FOS\UserBundle\Model\UserInterface
+            inversedBy: tokens
+    lifecycleCallbacks: {  }

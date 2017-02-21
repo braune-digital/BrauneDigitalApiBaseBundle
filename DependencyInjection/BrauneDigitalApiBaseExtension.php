@@ -24,6 +24,8 @@ class BrauneDigitalApiBaseExtension extends Extension
 
         $container->setParameter('braune_digital_api_base.modules', $config['modules']);
         $container->setParameter('braune_digital_api_base.timeout', $config['timeout']);
+        $container->setParameter('braune_digital_api_base.features', $config['features']);
+        $container->setParameter('braune_digital_api_base.features.serialization', array_key_exists('serialization', $config['features']) ? $config['features']['serialization'] : []);
 
 
         if(!$container->hasParameter('braune_digital_api_base.configuration')) {

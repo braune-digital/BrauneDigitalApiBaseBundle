@@ -6,9 +6,13 @@ services:
         class:  'BrauneDigital\ApiBaseBundle\Security\ApiKeyAuthenticator'
         arguments: ['%braune_digital_api_base.timeout%', '%braune_digital_api_base.security.apikey_authenticator.field_name%']
         public: false
+
     braune_digital_api_base.security.apikey_user_provider:
         class: 'BrauneDigital\ApiBaseBundle\Security\ApiKeyUserProvider'
         arguments: ['@fos_user.user_manager']
+        calls:
+            - [setContainer, ['@service_container']]
+
     braune_digital_api_base.view_response_listener:
         class: 'BrauneDigital\ApiBaseBundle\EventListener\ViewResponseListener'
         arguments:
@@ -20,3 +24,7 @@ services:
         class: BrauneDigital\ApiBaseBundle\EventListener\RangeHeaderListener
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest  }
+
+    braune_digital_api_base.service.token_manager:
+        class: 'BrauneDigital\ApiBaseBundle\Service\TokenManager'
+        arguments: ['@service_container', '%braune_digital_api_base.security.apikey_authenticator.field_name%']
