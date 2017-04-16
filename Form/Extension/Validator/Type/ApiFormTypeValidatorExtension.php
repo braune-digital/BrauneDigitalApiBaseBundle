@@ -2,6 +2,7 @@
 
 namespace BrauneDigital\ApiBaseBundle\Form\Extension\Validator\Type;
 
+use BrauneDigital\ApiBaseBundle\Form\Extension\Validator\ViolationMapper\ApiViolationMapper;
 use Symfony\Component\Form\Extension\Validator\Type\BaseValidatorExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
@@ -28,7 +29,7 @@ class ApiFormTypeValidatorExtension extends BaseValidatorExtension
 	public function __construct(ValidatorInterface $validator)
 	{
 		$this->validator = $validator;
-		$this->violationMapper = new ViolationMapper();
+		$this->violationMapper = new ApiViolationMapper();
 	}
 
 	/**
