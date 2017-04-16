@@ -24,13 +24,7 @@ services:
         class: BrauneDigital\ApiBaseBundle\EventListener\RangeHeaderListener
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest  }
-
-    braune_digital_api_base.event_listener.serialization_listener:
-        class: 'BrauneDigital\ApiBaseBundle\EventListener\SerializationListener'
-        arguments: ['%braune_digital_api_base.features.serialization%']
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest  }
-
+            
     braune_digital_api_base.service.token_manager:
         class: 'BrauneDigital\ApiBaseBundle\Service\TokenManager'
         arguments: ['@service_container', '%braune_digital_api_base.security.apikey_authenticator.field_name%']
