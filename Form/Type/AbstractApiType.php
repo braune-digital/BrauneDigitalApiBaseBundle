@@ -5,10 +5,16 @@ use BrauneDigital\ApiBaseBundle\Form\ApiRequestHandler;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use VSF\FahrschuleFlorin\BaseBundle\Validation\ValidationRequestGroupResolver;
 
 abstract class AbstractApiType extends AbstractType {
 
     private static $apiRequestHandler;
+
+	/**
+	 * @var ValidationRequestGroupResolver
+	 */
+	private $validationRequestGroupResolver;
 
     /**
      * @param FormBuilderInterface $builder
@@ -34,4 +40,22 @@ abstract class AbstractApiType extends AbstractType {
     {
         $resolver->setDefault('csrf_protection', false);
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getValidationRequestGroupResolver()
+	{
+		return $this->validationRequestGroupResolver;
+	}
+
+	/**
+	 * @param mixed $validationRequestGroupResolver
+	 */
+	public function setValidationRequestGroupResolver($validationRequestGroupResolver)
+	{
+		$this->validationRequestGroupResolver = $validationRequestGroupResolver;
+	}
+
+
 }

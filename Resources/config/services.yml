@@ -25,6 +25,18 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest  }
 
+    braune_digital_api_base.event_listener.serialization_listener:
+        class: 'BrauneDigital\ApiBaseBundle\EventListener\SerializationListener'
+        arguments: ['%braune_digital_api_base.features.serialization%']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest  }
+
     braune_digital_api_base.service.token_manager:
         class: 'BrauneDigital\ApiBaseBundle\Service\TokenManager'
         arguments: ['@service_container', '%braune_digital_api_base.security.apikey_authenticator.field_name%']
+
+    braune_digital_api_base.type_extension.form.validator:
+        class: 'BrauneDigital\ApiBaseBundle\Form\Extension\Validator\Type\ApiFormTypeValidatorExtension'
+        arguments: ['@validator']
+        tags:
+            - { name: form.type_extension, extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType'  }
