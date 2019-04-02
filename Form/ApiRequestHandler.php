@@ -5,12 +5,10 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\RequestHandlerInterface;
 use Symfony\Component\Form\Util\ServerParams;
 use Symfony\Component\HttpFoundation\Request;
 
-//borrowed from Symfony\Component\Form\Extension\HttpFoundationRequestHandler
-class ApiRequestHandler implements RequestHandlerInterface
+class ApiRequestHandler extends HttpFoundationRequestHandler
 {
     /**
      * @var ServerParams
